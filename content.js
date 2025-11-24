@@ -1,3 +1,4 @@
+// ================= content.js =================
 (function() {
     'use strict';
 
@@ -5,15 +6,20 @@
         if (el && el.parentNode) el.remove();
     }
 
-    function hide(sel) {
-        document.querySelectorAll(sel).forEach(el => el.style.setProperty('display', 'none', 'important'));
+    function hideSelector(sel) {
+        document.querySelectorAll(sel).forEach(el => el.style.setProperty('display','none','important'));
     }
 
-    /* ---------- Remove rating graphs ---------- */
+    /* ---------- Remove entire rating graph including axes ---------- */
     function removeGraphs() {
-        hide('#rating-graph, .rating-graph, .rating-graph-container, .graph-container, .cf-rating-graph');
-        hide('svg.rating-graph, svg.ratings-chart');
-        hide('canvas');
+        hideSelector('#rating-graph');
+        hideSelector('.rating-graph');
+        hideSelector('.rating-graph-container');
+        hideSelector('.graph-container');
+        hideSelector('.cf-rating-graph');
+        hideSelector('svg.rating-graph');
+        hideSelector('svg.ratings-chart');
+        hideSelector('canvas');
     }
 
     /* ---------- Remove contest rating lines from profile ---------- */
@@ -28,7 +34,7 @@
         });
     }
 
-    /* ---------- Remove rating-change column and last column from contests table ---------- */
+    /* ---------- Scrub only rating-change and last column in contests table ---------- */
     function scrubContestsTable() {
         document.querySelectorAll('table').forEach(table => {
             const ths = Array.from(table.querySelectorAll('th'));
@@ -38,11 +44,12 @@
             if (!headers.some(h => h.includes('contest'))) return;
 
             const removeIdxs = new Set();
-            headers.forEach((h, i) => {
-                if (h.includes('rating change') || h === 'rating') removeIdxs.add(i);
+            headers.forEach((h,i) => {
+                if (h.includes('rating change')) removeIdxs.add(i);
             });
-            removeIdxs.add(headers.length - 1); // last column
+            removeIdxs.add(headers.length-1); // last column
 
+            // Only remove the targeted columns
             Array.from(removeIdxs).sort((a,b)=>b-a).forEach(idx => {
                 if (ths[idx]) safeRemove(ths[idx]);
             });
@@ -56,7 +63,7 @@
         });
     }
 
-    /* ---------- Remove ratings from mini-profile box ---------- */
+    /* ---------- Remove rating from mini-profile ---------- */
     function removeMiniBoxRating() {
         const boxes = document.querySelectorAll('.userinfo, .userbox, .userbox-outer, .profileinfo, .sidebar, #sidebar');
         boxes.forEach(box => {
@@ -70,34 +77,36 @@
         });
     }
 
-    /* ---------- Restore all handles ---------- */
+    /* ---------- Restore handles to black bold ---------- */
     function restoreHandles() {
         document.querySelectorAll('a[href*="/profile/"]').forEach(a => {
-            a.style.setProperty('color', 'black', 'important');
-            a.style.setProperty('font-weight', 'bold', 'important');
-            a.style.setProperty('text-shadow', 'none', 'important');
+            a.style.setProperty('color','black','important');
+            a.style.setProperty('font-weight','bold','important');
+            a.style.setProperty('text-shadow','none','important');
         });
     }
 
-    /* ---------- Main cleanup ---------- */
+    /* ---------- Hide page body initially to prevent flicker ---------- */
+    document.documentElement.style.visibility = 'hidden';
+
+    /* ---------- Run cleanup ---------- */
     function cleanAll() {
-        try {
-            removeGraphs();
-            removeContestRatingLine();
-            scrubContestsTable();
-            removeMiniBoxRating();
-            restoreHandles();
-        } finally {
-            // Ensure page is visible even if cleanup fails
-            document.documentElement.style.visibility = 'visible';
-        }
+        removeGraphs();
+        removeContestRatingLine();
+        scrubContestsTable();
+        removeMiniBoxRating();
+        restoreHandles();
+        document.documentElement.style.visibility = 'visible';
     }
 
-    // Run immediately
-    cleanAll();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', cleanAll);
+    } else {
+        cleanAll();
+    }
 
     // Observe dynamically inserted content
     const root = document.querySelector('#page-content') || document.body;
-    const observer = new MutationObserver(() => cleanAll());
+    const observer = new MutationObserver(cleanAll);
     observer.observe(root, { childList: true, subtree: true });
 })();

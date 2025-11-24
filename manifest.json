@@ -1,14 +1,14 @@
 {
     "manifest_version": 3,
     "name": "Demetric",
-    "version": "1.0",
-    "description": "Remove all ratings, graphs, and rating-related info from Codeforces without causing flicker.",
+    "version": "1.2",
+    "description": "Remove all ratings, graphs, and rating-related info from Codeforces safely, with zero flicker.",
     "content_scripts": [
         {
             "matches": ["*://codeforces.com/*", "*://*.codeforces.com/*"],
             "js": ["content.js"],
             "css": ["hide.css"],
-            "run_at": "document_idle"
+            "run_at": "document_start"
         }
     ]
 }

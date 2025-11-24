@@ -1,11 +1,13 @@
-/* Make all user handles black */
+/* ================= hide.css ================= */
+
+/* Make all handles black and bold immediately to prevent flicker */
 a[href*="/profile/"] {
     color: black !important;
     font-weight: bold !important;
     text-shadow: none !important;
 }
 
-/* Hide all known rating titles and graphs */
+/* Hide all known rating titles and graph containers at load */
 .user-title, .user-rank, #rating-graph, .rating-graph, .rating-graph-container,
 .graph-container, .cf-rating-graph, svg.rating-graph, svg.ratings-chart, canvas {
     display: none !important;
