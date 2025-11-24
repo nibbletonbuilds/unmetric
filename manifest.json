@@ -1,20 +1,14 @@
 {
     "manifest_version": 3,
-    "name": "CF Rating Scrubber",
+    "name": "Demetric",
     "version": "1.0",
-    "description": "Hide all Codeforces ratings, colors, and titles.",
-    "permissions": [],
-    "web_accessible_resources": [
-        {
-            "resources": ["hide.css"],
-            "matches": ["*://codeforces.com/*", "*://*.codeforces.com/*"]
-        }
-    ],
+    "description": "Remove all ratings, graphs, and rating-related info from Codeforces without causing flicker.",
     "content_scripts": [
         {
             "matches": ["*://codeforces.com/*", "*://*.codeforces.com/*"],
             "js": ["content.js"],
-            "css": ["hide.css"]
+            "css": ["hide.css"],
+            "run_at": "document_idle"
         }
     ]
 }

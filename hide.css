@@ -1,31 +1,12 @@
-/* Kill colored handles */
+/* Make all user handles black */
 a[href*="/profile/"] {
     color: black !important;
-}
-
-/* Hide rating numbers, titles, colors, badges */
-span.user-gray, span.user-green, span.user-cyan,
-span.user-blue, span.user-violet, span.user-orange,
-span.user-red, span.user-admin,
-span.user-unrated, span.user-legendary,
-span.user-handle, span.rating, span.rank {
-    color: black !important;
+    font-weight: bold !important;
     text-shadow: none !important;
 }
 
-/* Hide profile rating graph */
-div#profile-content .info__row, 
-.rating-table,
-ul.ratings-chart {
+/* Hide all known rating titles and graphs */
+.user-title, .user-rank, #rating-graph, .rating-graph, .rating-graph-container,
+.graph-container, .cf-rating-graph, svg.rating-graph, svg.ratings-chart, canvas {
     display: none !important;
-}
-
-/* Hide rating change tables */
-table.rating-table, .datatable.ratings {
-    display: none !important;
-}
-
-/* Hide title text ("expert", "gm", etc.) */
-span.rank {
-    visibility: hidden !important;
 }
