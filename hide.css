@@ -1,6 +1,4 @@
-/* ================= hide.css ================= */
-
-/* Make all handles black and bold immediately to prevent flicker */
+/* Make all handles black and bold immediately */
 a[href*="/profile/"] {
     color: black !important;
     font-weight: bold !important;
@@ -8,7 +6,15 @@ a[href*="/profile/"] {
 }
 
 /* Hide all known rating titles and graph containers at load */
-.user-title, .user-rank, #rating-graph, .rating-graph, .rating-graph-container,
-.graph-container, .cf-rating-graph, svg.rating-graph, svg.ratings-chart, canvas {
+.user-title,
+.user-rank,
+#rating-graph,
+.rating-graph,
+.rating-graph-container,
+.graph-container,
+.cf-rating-graph,
+svg.rating-graph,
+svg.ratings-chart,
+canvas {
     display: none !important;
 }

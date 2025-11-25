@@ -1,4 +1,3 @@
-// ================= content.js =================
 (function() {
     'use strict';
 
@@ -63,6 +62,30 @@
         });
     }
 
+    /* ---------- NEW: Remove “New rating” column on /contests/with/<handle> ONLY ---------- */
+    function removeNewRatingColumn() {
+        if (!location.pathname.startsWith('/contests/with/')) return;
+
+        document.querySelectorAll('table').forEach(table => {
+            const ths = Array.from(table.querySelectorAll('th'));
+            if (!ths.length) return;
+
+            const headers = ths.map(h => (h.textContent || '').toLowerCase().trim());
+            const idx = headers.findIndex(h => h === 'new rating' || h.includes('new rating'));
+
+            if (idx === -1) return;
+
+            // remove header cell
+            if (ths[idx]) safeRemove(ths[idx]);
+
+            // remove column cells
+            table.querySelectorAll('tr').forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                if (tds[idx]) safeRemove(tds[idx]);
+            });
+        });
+    }
+
     /* ---------- Remove rating from mini-profile ---------- */
     function removeMiniBoxRating() {
         const boxes = document.querySelectorAll('.userinfo, .userbox, .userbox-outer, .profileinfo, .sidebar, #sidebar');
@@ -94,6 +117,9 @@
         removeGraphs();
         removeContestRatingLine();
         scrubContestsTable();
+
+        removeNewRatingColumn();   // ← ★ ONLY NEW LINE ADDED
+
         removeMiniBoxRating();
         restoreHandles();
         document.documentElement.style.visibility = 'visible';
